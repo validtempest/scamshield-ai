@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-[#0B1120]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScamShield AI — Dasbor Keamanan Siber</title>
+
+    <!-- Google Fonts: Inter & JetBrains Mono for futuristic accents -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            dark: '#0B1120',
+                            card: 'rgba(17, 24, 39, 0.7)',
+                            border: 'rgba(255, 255, 255, 0.08)',
+                            accent: '#06b6d4', /* Cyan */
+                            neon: '#3b82f6',   /* Neon Blue */
+                            safe: '#10b981',   /* Emerald */
+                            scam: '#f43f5e',   /* Rose */
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS for custom animations and glow effects -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="min-h-full text-slate-100 flex flex-col font-sans overflow-x-hidden relative">
+
+    <!-- Futuristic BG FX Wrapper to prevent vertical overflow/scroll excess -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <!-- Futuristic BG Grid Pattern -->
+        <div class="cyber-grid absolute inset-0 opacity-[0.03]"></div>
+        
+        <!-- Neon Background Glow Blobs -->
+        <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-rose-500/5 rounded-full blur-[120px]"></div>
+    </div>
+
+    <!-- Header Navbar -->
+    <header class="sticky top-0 z-50 w-full border-b border-cyber-border bg-[#0B1120]/75 backdrop-blur-md transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex h-16 items-center justify-between">
+                
+                <!-- Logo/Brand -->
+                <a href="/" class="flex items-center gap-3 group">
+                    <div class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-cyber-accent to-cyber-neon shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-all duration-300">
+                        <i class="fa-solid fa-shield-halved text-white text-lg"></i>
+                        <span class="absolute inset-0 rounded-xl bg-cyan-400 opacity-0 group-hover:opacity-30 blur transition-opacity duration-300"></span>
+                    </div>
+                    <span class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-white via-slate-100 to-cyan-400 bg-clip-text text-transparent">
+                        SCAM<span class="text-cyber-accent">SHIELD</span> <span class="text-xs font-mono bg-cyber-accent/10 text-cyber-accent border border-cyber-accent/30 px-1.5 py-0.5 rounded ml-1">AI</span>
+                    </span>
+                </a>
+
+                <!-- Navigation Links -->
+                <nav class="hidden md:flex items-center gap-8">
+                    <a href="/" class="text-sm font-medium tracking-wide text-slate-300 hover:text-cyber-accent transition-colors duration-200 flex items-center gap-2">
+                        <i class="fa-solid fa-radar text-xs opacity-75"></i> Analisis
+                    </a>
+                    <a href="/dashboard" class="text-sm font-medium tracking-wide text-slate-300 hover:text-cyber-accent transition-colors duration-200 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-xs opacity-75"></i> Dasbor
+                    </a>
+                    <a href="/history" class="text-sm font-medium tracking-wide text-slate-300 hover:text-cyber-accent transition-colors duration-200 flex items-center gap-2">
+                        <i class="fa-solid fa-clock-rotate-left text-xs opacity-75"></i> Riwayat
+                    </a>
+                </nav>
+
+                <!-- Status Badge -->
+                <div class="flex items-center gap-4">
+                    <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyber-accent/10 border border-cyber-accent/25 text-xs text-cyber-accent font-semibold tracking-wide uppercase">
+                        <span class="w-1.5 h-1.5 bg-cyber-accent rounded-full animate-pulse"></span>
+                        Node AI Aktif
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Nav Bar (Bottom Navigation for outstanding mobile UX) -->
+    <div class="md:hidden fixed bottom-4 left-4 right-4 z-50 rounded-2xl border border-cyber-border bg-[#0B1120]/80 backdrop-blur-lg px-6 py-3 shadow-2xl shadow-black/80 flex justify-around items-center">
+        <a href="/" class="flex flex-col items-center gap-1 text-slate-400 hover:text-cyber-accent transition-colors duration-200">
+            <i class="fa-solid fa-magnifying-glass text-lg"></i>
+            <span class="text-[10px] font-semibold tracking-wider">Analisis</span>
+        </a>
+        <a href="/dashboard" class="flex flex-col items-center gap-1 text-slate-400 hover:text-cyber-accent transition-colors duration-200">
+            <i class="fa-solid fa-chart-simple text-lg"></i>
+            <span class="text-[10px] font-semibold tracking-wider">Dasbor</span>
+        </a>
+        <a href="/history" class="flex flex-col items-center gap-1 text-slate-400 hover:text-cyber-accent transition-colors duration-200">
+            <i class="fa-solid fa-database text-lg"></i>
+            <span class="text-[10px] font-semibold tracking-wider">Riwayat</span>
+        </a>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 mb-20 md:mb-0">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="z-10 border-t border-cyber-border bg-[#090d18] py-6 text-center text-xs text-slate-500 tracking-wider font-mono">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>© 2026 ScamShield AI — Didukung oleh Naive Bayes & TF-IDF. Hak Cipta Dilindungi.</p>
+        </div>
+    </footer>
+    
+</body>
+</html>

@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+
+    <!-- Glowing Container depending on prediction -->
+    <div class="result-card glass-card rounded-3xl overflow-hidden shadow-2xl relative border-t-4 
+        {% if prediction == 'scam' %}
+            border-t-cyber-scam border-cyber-scam/30 neon-glow-rose
+        {% else %}
+            border-t-cyber-safe border-cyber-safe/30 neon-glow-emerald
+        {% endif %} animate-fade-in-up"
+    >
+        
+        <div class="p-6 md:p-10">
+            
+            <!-- Result Title Header -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8 pb-6 border-b border-cyber-border">
+                <div>
+                    <h2 class="text-2xl font-extrabold tracking-wide text-slate-100 uppercase font-mono">
+                        Penilaian Sistem
+                    </h2>
+                    <p class="text-xs text-slate-400 font-mono mt-0.5">
+                        Node Analisis SHA-256: SELESAI
+                    </p>
+                </div>
+                
+                <!-- Large Status Badge -->
+                <div>
+                    {% if prediction == 'scam' %}
+                        <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-cyber-scam/10 border border-cyber-scam/35 text-cyber-scam font-black uppercase tracking-wider text-base neon-shadow-rose">
+                            <i class="fa-solid fa-triangle-exclamation animate-bounce"></i>
+                            TERDETEKSI SCAM
+                        </div>
+                    {% else %}
+                        <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-cyber-safe/10 border border-cyber-safe/35 text-cyber-safe font-black uppercase tracking-wider text-base neon-shadow-emerald">
+                            <i class="fa-solid fa-circle-check animate-pulse"></i>
+                            TANDA AMAN
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Double Column Analysis Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                
+                <!-- Metric Card 1: Confidence Score -->
+                <div class="glass-card bg-slate-900/40 rounded-xl p-5 border border-slate-800">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs text-slate-400 font-mono uppercase tracking-wider">
+                            Indeks Keyakinan
+                        </span>
+                        <span class="text-lg font-bold font-mono text-cyber-accent">
+                            {{ confidence }}%
+                        </span>
+                    </div>
+                    <!-- Custom Level Progress Bar -->
+                    <div class="w-full bg-slate-800/80 rounded-full h-2">
+                        <div 
+                            id="confidenceBar"
+                            data-width="{{ confidence }}"
+                            class="bg-gradient-to-r from-cyan-500 to-cyber-neon h-2 rounded-full transition-all duration-1000"
+                            style="width: 0%"
+                        ></div>
+                    </div>
+                    <p class="text-[10px] text-slate-500 font-mono mt-2">
+                        Margin keyakinan statistik dihitung pada subset fitur.
+                    </p>
+                </div>
+
+                <!-- Metric Card 2: Risk Score -->
+                <div class="glass-card bg-slate-900/40 rounded-xl p-5 border border-slate-800">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs text-slate-400 font-mono uppercase tracking-wider">
+                            Skala Risiko Dihitung
+                        </span>
+                        <span class="text-lg font-bold font-mono 
+                            {% if prediction == 'scam' %}
+                                text-cyber-scam
+                            {% else %}
+                                text-cyber-safe
+                            {% endif %}"
+                        >
+                            {{ risk_score }}/100 <span class="text-xs font-sans font-medium block sm:inline mt-0.5 sm:mt-0 opacity-80">({{ risk_level }})</span>
+                        </span>
+                    </div>
+                    <!-- Custom Level Progress Bar based on Prediction -->
+                    <div class="w-full bg-slate-800/80 rounded-full h-2">
+                        <div 
+                            id="riskBar"
+                            data-width="{{ risk_score }}"
+                            class="{% if prediction == 'scam' %} bg-cyber-scam {% else %} bg-cyber-safe {% endif %} h-2 rounded-full transition-all duration-1000"
+                            style="width: 0%"
+                        ></div>
+                    </div>
+                    <p class="text-[10px] text-slate-500 font-mono mt-2">
+                        Skor komposit yang menunjukkan intensitas vektor ancaman mentah.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Categories Banner Section -->
+            <div class="glass-card bg-slate-950/40 rounded-2xl p-5 border border-slate-800/80 mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-700/60 flex items-center justify-center text-slate-300">
+                        <i class="fa-solid fa-tags text-sm"></i>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] uppercase font-mono text-slate-400">Kategori Terklasifikasi</span>
+                        <h4 class="font-bold text-slate-100 text-sm tracking-wider font-mono">
+                            {{ category }}
+                        </h4>
+                    </div>
+                </div>
+                
+                <div class="text-right">
+                    <span class="block text-[10px] uppercase font-mono text-slate-500">Mesin Analisis</span>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800/60 border border-slate-700 text-xs font-mono text-slate-300">
+                        Naive Bayes v1
+                    </span>
+                </div>
+            </div>
+
+            <!-- AI Analysis Reason Block -->
+            <div class="glass-card rounded-2xl p-5 border mb-8
+                {% if prediction == 'scam' %}
+                    border-cyber-scam/30 bg-cyber-scam/5
+                {% else %}
+                    border-cyber-safe/30 bg-cyber-safe/5
+                {% endif %}
+            ">
+                <!-- Header -->
+                <div class="flex items-center gap-2.5 mb-4">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0
+                        {% if prediction == 'scam' %}
+                            bg-cyber-scam/10 border border-cyber-scam/25 text-cyber-scam
+                        {% else %}
+                            bg-cyber-safe/10 border border-cyber-safe/25 text-cyber-safe
+                        {% endif %}
+                    ">
+                        <i class="fa-solid fa-brain text-sm"></i>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] uppercase font-mono tracking-wider
+                            {% if prediction == 'scam' %} text-cyber-scam/80 {% else %} text-cyber-safe/80 {% endif %}
+                        ">Penjelasan AI</span>
+                        <h5 class="text-sm font-bold text-slate-100 tracking-wide">Mengapa AI menilai pesan ini?</h5>
+                    </div>
+                </div>
+
+                <!-- Summary -->
+                <p class="text-sm font-semibold text-slate-100 mb-2 leading-relaxed">
+                    {{ reason.summary }}
+                </p>
+
+                <!-- Details -->
+                <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                    {{ reason.details }}
+                </p>
+
+                <!-- Detected Keywords Tags -->
+                {% if reason.keywords %}
+                <div class="border-t border-slate-800/60 pt-3">
+                    <span class="text-[10px] uppercase font-mono tracking-wider text-slate-500 mb-2 block">
+                        Kata Kunci Terdeteksi
+                    </span>
+                    <div class="flex flex-wrap gap-1.5">
+                        {% for kw in reason.keywords %}
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-mono font-medium
+                            {% if prediction == 'scam' %}
+                                bg-cyber-scam/10 border border-cyber-scam/25 text-cyber-scam
+                            {% else %}
+                                bg-cyber-safe/10 border border-cyber-safe/25 text-cyber-safe
+                            {% endif %}
+                        ">
+                            <i class="fa-solid fa-hashtag text-[8px] mr-1 opacity-70"></i>{{ kw }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Raw & Preprocessed Message Details -->
+            <div class="space-y-6 mb-10">
+                
+                <!-- Original Message Box -->
+                <div>
+                    <h5 class="text-xs uppercase font-mono tracking-wider text-slate-300 mb-2 flex items-center gap-1.5">
+                        <i class="fa-regular fa-envelope text-cyber-accent"></i> Isi Pesan Masukan
+                    </h5>
+                    <div class="w-full bg-slate-950/80 rounded-xl border border-slate-800/90 p-4 font-sans text-slate-200 text-sm leading-relaxed whitespace-pre-wrap">
+                        {{ message }}
+                    </div>
+                </div>
+
+                <!-- Cleaned Message Box -->
+                <div>
+                    <h5 class="text-xs uppercase font-mono tracking-wider text-slate-300 mb-2 flex items-center gap-1.5">
+                        <i class="fa-solid fa-code text-cyber-accent"></i> Matriks Hasil Normalisasi
+                    </h5>
+                    <div class="w-full bg-slate-950/80 rounded-xl border border-slate-800/90 p-4 font-mono text-cyan-400 text-xs leading-relaxed overflow-x-auto whitespace-pre-wrap">
+                        {{ cleaned_text if cleaned_text else "[String Kosong / Kata Henti Dihapus]" }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back CTA -->
+            <a
+                href="/"
+                class="w-full flex items-center justify-center gap-3 py-3.5 px-6 rounded-xl font-bold border border-slate-700 hover:border-cyber-accent bg-slate-900/30 text-slate-200 hover:text-cyber-accent hover:bg-cyber-accent/5 active:scale-[0.99] transition-all duration-300 shadow-md text-sm md:text-base uppercase tracking-wider"
+            >
+                <i class="fa-solid fa-arrow-left"></i>
+                Pindai Pesan Lain
+            </a>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

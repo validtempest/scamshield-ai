@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto animate-fade-in-up">
+
+    <!-- Hero Section -->
+    <div class="text-center mb-10">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyber-accent/10 border border-cyber-accent/30 text-xs text-cyber-accent font-mono mb-4">
+            <i class="fa-solid fa-user-shield"></i> Perlindungan Ancaman Tingkat Lanjut v1.4.2
+        </div>
+        
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
+            ScamShield <span class="bg-gradient-to-r from-cyber-accent to-cyber-neon bg-clip-text text-transparent">AI</span>
+        </h1>
+        
+        <p class="text-slate-400 text-base md:text-lg max-w-xl mx-auto">
+            Deteksi pesan smishing, phishing, dan scam secara instan menggunakan mesin analisis pola kecerdasan buatan.
+        </p>
+    </div>
+
+    <!-- Main Threat Analysis Card -->
+    <div class="glass-card rounded-2xl overflow-hidden shadow-2xl relative mb-12">
+        <!-- AI Scanner Active Animation Bar -->
+        <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyber-accent to-transparent animate-pulse"></div>
+
+        <div class="p-6 md:p-8">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-cyber-accent animate-ping"></div>
+                    <h3 class="text-lg font-bold text-slate-100 uppercase tracking-wider font-mono text-xs">
+                        Terminal Analisis Ancaman
+                    </h3>
+                </div>
+                
+                <span class="text-xs text-slate-500 font-mono">
+                    Node: INDO-AI-01
+                </span>
+            </div>
+
+            <!-- Analysis Form -->
+            <form action="/analyze" method="POST" id="analyzeForm" class="space-y-6">
+                
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center text-sm">
+                        <label for="messageInput" class="text-slate-300 font-medium">
+                            Isi Pesan Mencurigakan
+                        </label>
+                        <span id="charCount" class="text-xs font-mono text-slate-400 bg-slate-800/40 px-2 py-0.5 rounded border border-slate-700/50">
+                            0 / 500
+                        </span>
+                    </div>
+
+                    <div class="relative">
+                        <textarea
+                            name="message"
+                            id="messageInput"
+                            rows="6"
+                            maxlength="500"
+                            placeholder="Tempel konten pesan, obrolan WhatsApp, atau kutipan email di sini..."
+                            required
+                            class="w-full rounded-xl bg-slate-950/80 border border-slate-800 p-4 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyber-accent focus:ring-2 focus:ring-cyber-accent/10 transition-all duration-300 text-sm md:text-base cyber-input resize-none"
+                        ></textarea>
+                        
+                        <!-- Accent Corner lines for sci-fi look -->
+                        <div class="absolute bottom-2 right-2 flex gap-1 pointer-events-none opacity-40">
+                            <span class="w-1.5 h-1.5 border-r border-b border-cyber-accent"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-3 pt-2">
+                    <button
+                        type="submit"
+                        id="analyzeBtn"
+                        class="w-full flex items-center justify-center gap-3 py-3.5 px-6 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-cyber-accent to-cyan-400 hover:from-cyan-400 hover:to-cyber-accent active:scale-[0.99] transition-all duration-300 shadow-lg shadow-cyan-500/20 text-sm md:text-base uppercase tracking-wider cursor-pointer"
+                    >
+                        <i class="fa-solid fa-bolt"></i>
+                        Analisis Pesan
+                    </button>
+
+                    <!-- Auxiliary Action Panel -->
+                    <div class="grid grid-cols-2 gap-3 pt-2">
+                        <a
+                            href="/dashboard"
+                            class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs md:text-sm font-semibold border border-cyber-accent/30 text-cyber-accent bg-cyber-accent/5 hover:bg-cyber-accent/10 hover:border-cyber-accent/60 transition-all duration-200"
+                        >
+                            <i class="fa-solid fa-chart-line"></i> Dasbor
+                        </a>
+
+                        <a
+                            href="/history"
+                            class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs md:text-sm font-semibold border border-slate-700/60 text-slate-300 bg-slate-800/10 hover:bg-slate-800/40 hover:border-slate-500 transition-all duration-200"
+                        >
+                            <i class="fa-solid fa-list-check"></i> Riwayat Pemindaian
+                        </a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Security Info / Features Section -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+        <div class="glass-card rounded-xl p-5 border border-slate-800/50">
+            <div class="w-10 h-10 rounded-lg bg-cyber-accent/10 text-cyber-accent flex items-center justify-center mx-auto mb-3">
+                <i class="fa-solid fa-shield-halved text-lg"></i>
+            </div>
+            <h4 class="text-sm font-bold text-slate-200 mb-1">Akurasi 99.2%</h4>
+            <p class="text-xs text-slate-400">Didukung oleh model analisis teks probabilistik tingkat lanjut.</p>
+        </div>
+        
+        <div class="glass-card rounded-xl p-5 border border-slate-800/50">
+            <div class="w-10 h-10 rounded-lg bg-cyber-neon/10 text-cyber-neon flex items-center justify-center mx-auto mb-3">
+                <i class="fa-solid fa-microchip text-lg"></i>
+            </div>
+            <h4 class="text-sm font-bold text-slate-200 mb-1">Pemeriksaan Real-time</h4>
+            <p class="text-xs text-slate-400">Analisis pola dan kata kunci mencurigakan secara instan.</p>
+        </div>
+
+        <div class="glass-card rounded-xl p-5 border border-slate-800/50">
+            <div class="w-10 h-10 rounded-lg bg-cyber-safe/10 text-cyber-safe flex items-center justify-center mx-auto mb-3">
+                <i class="fa-solid fa-user-shield text-lg"></i>
+            </div>
+            <h4 class="text-sm font-bold text-slate-200 mb-1">100% Privasi</h4>
+            <p class="text-xs text-slate-400">Semua komputasi disimpan dengan aman dan diisolasi dengan ketat.</p>
+        </div>
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% endblock %}

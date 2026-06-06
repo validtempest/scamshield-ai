@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="animate-fade-in-up space-y-8">
+
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-3xl font-extrabold tracking-tight">
+                Log <span class="bg-gradient-to-r from-cyber-accent to-cyber-neon bg-clip-text text-transparent">Riwayat Pemindaian</span>
+            </h1>
+            <p class="text-slate-400 text-sm mt-1">
+                Kubah kriptografi terperinci yang berisi semua log analisis historis dan metadata yang dihitung.
+            </p>
+        </div>
+
+        <!-- Navigation Actions -->
+        <div class="flex items-center gap-2 flex-wrap">
+            <a
+                href="/"
+                class="flex items-center gap-2 py-2 px-4 rounded-xl text-xs md:text-sm font-semibold border border-slate-700/60 text-slate-300 bg-slate-800/10 hover:bg-slate-800/40 transition-all duration-200"
+            >
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke Analisis
+            </a>
+            
+            <a
+                href="/dashboard"
+                class="flex items-center gap-2 py-2 px-4 rounded-xl text-xs md:text-sm font-semibold border border-cyber-accent/30 text-cyber-accent bg-cyber-accent/5 hover:bg-cyber-accent/10 hover:border-cyber-accent/60 transition-all duration-200"
+            >
+                <i class="fa-solid fa-chart-line"></i> Dasbor
+            </a>
+
+            {% if histories %}
+            <form 
+                action="/history/clear" 
+                method="POST" 
+                class="inline-block"
+                id="clearAllForm"
+            >
+                <button
+                    type="submit"
+                    class="flex items-center gap-2 py-2 px-4 rounded-xl text-xs md:text-sm font-semibold border border-cyber-scam/30 text-cyber-scam bg-cyber-scam/5 hover:bg-cyber-scam/10 hover:border-cyber-scam/60 transition-all duration-200 cursor-pointer"
+                >
+                    <i class="fa-solid fa-trash-arrow-up"></i> Hapus Semua Histori
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- History Vault Card List -->
+    <div class="space-y-4">
+        {% if histories %}
+            {% for item in histories %}
+            <div class="glass-card rounded-2xl p-5 border border-slate-800/80 hover:border-slate-700/50 flex flex-col md:flex-row md:items-center justify-between gap-6 transition-all duration-300 relative group overflow-hidden">
+                
+                <!-- Side Status Stripe Accent -->
+                <div class="absolute left-0 top-0 bottom-0 w-[3px] 
+                    {% if item.prediction == 'scam' %} bg-cyber-scam {% else %} bg-cyber-safe {% endif %} opacity-60 group-hover:opacity-100 transition-opacity duration-300"
+                ></div>
+
+                <!-- Left Content Area (ID, Message, Meta) -->
+                <div class="space-y-3 min-w-0 flex-grow pl-2">
+                    
+                    <div class="flex flex-wrap items-center gap-3">
+                        <!-- ID Hex Badge -->
+                        <span class="text-[10px] font-mono text-slate-400 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded">
+                            ID: #{{ "%04d" | format(item.id) }}
+                        </span>
+                        
+                        <!-- Prediction tag -->
+                        {% if item.prediction == 'scam' %}
+                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[10px] font-bold tracking-wide uppercase bg-cyber-scam/10 border border-cyber-scam/30 text-cyber-scam shadow-sm">
+                                <span class="w-1.5 h-1.5 bg-cyber-scam rounded-full animate-ping"></span>
+                                SCAM
+                            </span>
+                        {% else %}
+                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[10px] font-bold tracking-wide uppercase bg-cyber-safe/10 border border-cyber-safe/30 text-cyber-safe shadow-sm">
+                                <span class="w-1.5 h-1.5 bg-cyber-safe rounded-full animate-pulse"></span>
+                                AMAN
+                            </span>
+                        {% endif %}
+
+                        <!-- Category -->
+                        <span class="text-[10px] font-mono text-slate-400">
+                            Kategori: <strong class="text-slate-300">{{ item.category }}</strong>
+                        </span>
+                    </div>
+
+                    <!-- Full/Truncated Message Content Box -->
+                    <div class="text-slate-100 text-sm md:text-base leading-relaxed break-words bg-slate-950/20 p-3 rounded-lg border border-slate-900/40">
+                        {{ item.message }}
+                    </div>
+
+                    <!-- Cleaned preprocessed text details expandable block -->
+                    {% if item.cleaned_text %}
+                    <div class="text-[11px] font-mono text-slate-500 flex items-center gap-1.5">
+                        <i class="fa-solid fa-square-root-variable text-cyber-accent/80"></i> Token hasil pemrosesan: 
+                        <span class="text-cyan-500/80 truncate max-w-lg">
+                            "{{ item.cleaned_text }}"
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Right Parameters & Actions Area -->
+                <div class="flex sm:flex-row md:flex-col items-start sm:items-center md:items-end justify-between md:justify-center gap-4 shrink-0 border-t border-slate-900 md:border-t-0 pt-4 md:pt-0">
+                    
+                    <!-- Metrics Row -->
+                    <div class="md:text-right space-y-1.5">
+                        <!-- Risk Indicator -->
+                        <div class="flex items-center md:justify-end gap-2 text-xs font-mono">
+                            <span class="text-slate-400 text-[10px] uppercase tracking-wider">Indeks Ancaman:</span>
+                            <span class="font-bold font-mono px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800
+                                {% if item.prediction == 'scam' %} text-cyber-scam {% else %} text-cyber-safe {% endif %}"
+                            >
+                                {{ item.risk_score }}/100
+                            </span>
+                        </div>
+                        
+                        <!-- Formatted Timestamp -->
+                        <div class="text-[10px] text-slate-500 font-mono flex items-center md:justify-end gap-1.5">
+                            <i class="fa-regular fa-clock text-[9px]"></i>
+                            {{ item.created_at.strftime('%d-%m-%Y %H:%M') }} WIB
+                        </div>
+                    </div>
+
+                    <!-- Delete Button Form -->
+                    <form 
+                        action="/history/delete/{{ item.id }}" 
+                        method="POST" 
+                        class="delete-history-form"
+                    >
+                        <button
+                            type="submit"
+                            class="delete-btn flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold font-mono border border-slate-800 text-slate-400 hover:text-cyber-scam hover:border-cyber-scam/40 hover:bg-cyber-scam/5 transition-all duration-200 cursor-pointer"
+                        >
+                            <i class="fa-solid fa-trash-can text-[10px]"></i>
+                            Hapus
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
+            {% endfor %}
+        {% else %}
+            <!-- Vault Empty State -->
+            <div class="glass-card rounded-2xl p-12 border border-slate-800 text-center flex flex-col items-center justify-center max-w-md mx-auto">
+                <div class="w-16 h-16 rounded-full bg-slate-900 border border-slate-800 text-slate-500 flex items-center justify-center mb-4">
+                    <i class="fa-solid fa-vault text-2xl opacity-40"></i>
+                </div>
+                <h3 class="text-base font-bold text-slate-300 uppercase tracking-wider font-mono">
+                    Kubah Kosong
+                </h3>
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                    Tidak ada data riwayat klasifikasi ancaman yang ditemukan. Kirim data dari halaman analisis utama untuk menyimpan hasil di registri SQLite.
+                </p>
+                <a
+                    href="/"
+                    class="mt-6 flex items-center gap-2 py-2 px-4 rounded-xl text-xs font-semibold border border-cyber-accent/30 text-cyber-accent bg-cyber-accent/5 hover:bg-cyber-accent/10 transition-all duration-200"
+                >
+                    <i class="fa-solid fa-radar text-[10px]"></i> Pindai Pesan Pertama
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Pagination Controls -->
+    {% if pagination and pagination.pages > 1 %}
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+
+        <!-- Info halaman -->
+        <p class="text-xs text-slate-500 font-mono">
+            Menampilkan
+            <span class="text-slate-300 font-semibold">
+                {{ (pagination.page - 1) * pagination.per_page + 1 }}–{{ [pagination.page * pagination.per_page, pagination.total] | min }}
+            </span>
+            dari <span class="text-slate-300 font-semibold">{{ pagination.total }}</span> riwayat
+        </p>
+
+        <!-- Tombol navigasi halaman -->
+        <nav class="flex items-center gap-1.5">
+
+            <!-- Tombol Sebelumnya -->
+            {% if pagination.has_prev %}
+            <a
+                href="{{ url_for('history', page=pagination.prev_num) }}"
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold font-mono border border-slate-700/60 text-slate-300 bg-slate-800/20 hover:bg-slate-800/60 hover:border-slate-600 transition-all duration-200"
+            >
+                <i class="fa-solid fa-chevron-left text-[9px]"></i> Sebelumnya
+            </a>
+            {% else %}
+            <span class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold font-mono border border-slate-800/40 text-slate-600 cursor-not-allowed">
+                <i class="fa-solid fa-chevron-left text-[9px]"></i> Sebelumnya
+            </span>
+            {% endif %}
+
+            <!-- Nomor Halaman -->
+            {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                {% if p %}
+                    {% if p == pagination.page %}
+                    <span class="px-3 py-1.5 rounded-lg text-xs font-bold font-mono border border-cyber-accent/50 text-cyber-accent bg-cyber-accent/10 shadow-sm shadow-cyan-500/10">
+                        {{ p }}
+                    </span>
+                    {% else %}
+                    <a
+                        href="{{ url_for('history', page=p) }}"
+                        class="px-3 py-1.5 rounded-lg text-xs font-semibold font-mono border border-slate-700/60 text-slate-400 bg-slate-800/10 hover:bg-slate-800/50 hover:text-slate-100 hover:border-slate-600 transition-all duration-200"
+                    >
+                        {{ p }}
+                    </a>
+                    {% endif %}
+                {% else %}
+                <span class="px-2 py-1.5 text-slate-600 text-xs font-mono">…</span>
+                {% endif %}
+            {% endfor %}
+
+            <!-- Tombol Selanjutnya -->
+            {% if pagination.has_next %}
+            <a
+                href="{{ url_for('history', page=pagination.next_num) }}"
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold font-mono border border-slate-700/60 text-slate-300 bg-slate-800/20 hover:bg-slate-800/60 hover:border-slate-600 transition-all duration-200"
+            >
+                Selanjutnya <i class="fa-solid fa-chevron-right text-[9px]"></i>
+            </a>
+            {% else %}
+            <span class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold font-mono border border-slate-800/40 text-slate-600 cursor-not-allowed">
+                Selanjutnya <i class="fa-solid fa-chevron-right text-[9px]"></i>
+            </span>
+            {% endif %}
+
+        </nav>
+    </div>
+    {% endif %}
+
+</div>
+
+<!-- Compatible JavaScript link -->
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% endblock %}

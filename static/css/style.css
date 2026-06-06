@@ -1,0 +1,148 @@
+/* Custom styles for ScamShield AI - Premium Cyber Security Dashboard */
+
+/* Background Grid Pattern */
+.cyber-grid {
+    background-size: 40px 40px;
+    background-image: 
+        linear-gradient(to right, rgba(6, 182, 212, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(6, 182, 212, 0.1) 1px, transparent 1px);
+}
+
+/* Glassmorphism Design System */
+.glass-card {
+    background: rgba(15, 23, 42, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+    border-color: rgba(6, 182, 212, 0.25);
+    box-shadow: 0 12px 40px -10px rgba(6, 182, 212, 0.15);
+}
+
+/* Special Interactive Focus States */
+.cyber-input {
+    background: rgba(15, 23, 42, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    transition: all 0.3s ease !important;
+}
+
+.cyber-input:focus {
+    outline: none !important;
+    border-color: #06b6d4 !important;
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.25) !important;
+}
+
+/* Premium Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0B1120;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #06b6d4;
+}
+
+/* Neon Glows & Highlights */
+.neon-glow-cyan {
+    box-shadow: 0 0 30px rgba(6, 182, 212, 0.2);
+}
+
+.neon-glow-rose {
+    box-shadow: 0 0 30px rgba(244, 63, 94, 0.2);
+}
+
+.neon-glow-emerald {
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
+}
+
+/* Custom CSS AI Spinner */
+.ai-spinner {
+    display: inline-block;
+    width: 1.25rem;
+    height: 1.25rem;
+    vertical-align: text-bottom;
+    border: 0.15em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: ai-spin 0.75s linear infinite;
+}
+
+@keyframes ai-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* AI Processing Scanner Beam Animation */
+.scanner-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.scanner-beam {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(to right, transparent, #06b6d4, transparent);
+    box-shadow: 0 0 15px #06b6d4;
+    animation: scanner-move 2.5s ease-in-out infinite;
+    opacity: 0.8;
+}
+
+@keyframes scanner-move {
+    0% {
+        top: 0%;
+    }
+    50% {
+        top: 100%;
+    }
+    100% {
+        top: 0%;
+    }
+}
+
+/* Gradient Text Custom Utilities */
+.text-cyber-gradient {
+    background: linear-gradient(to right, #ffffff, #e2e8f0, #06b6d4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Animation utilities */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Chart Center Placement */
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+}
